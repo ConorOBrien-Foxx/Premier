@@ -182,6 +182,8 @@ class PremState
                 @stack.push ord @stack.pop
             when "p"
                 $><< ("" << @stack.pop)
+            when "r"
+                @stack.reverse!
             when "s"
                 @stack.push @stack.pop.next
             when "v"

@@ -104,7 +104,7 @@ The following is a table of all operations currently available to a Premier prog
 | `o`         | `Str: s`         | Pushes the character code of the first character of `s` |
 | `p`         | `Any: a`         | Prints `a`, casting numbers to characters. |
 | `q`         | (Unimplemented)  | |
-| `r`         | (Unimplemented)  | |
+| `r`         | --               | Reverses the stack |
 | `s`         | `Str: s`         | Pushes the "next" string after `s` |
 | `s`         | `Num: n`         | Pushes `n + 1` |
 | `t`         | (Unimplemented)  | |
