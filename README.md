@@ -40,8 +40,10 @@ The following is a table of all operations currently available to a Premier prog
 | `_`         | `Num: n`         | Pushes `-n` |
 | `_`         | `Str: s`         | Pushes `s.reverse` |
 | `"`         | --               | Collects characters until next `"` into code and pushes them as a string |
+| `[`, `]`    | --               | Same as `[`, but nested |
 | `|`         | --               | Same as `"`, but instead treats each character as a function of the top member of the stack |
-| `#`         | `Str: s`         | Sets the program to `s`; continues to next iteration |
+| `#`         | `Str: s`         | Sets the program to `s`; continues to next iteration (disables implicit output) |
+| `$`         | `Str: s`         | Sets the data to `s` |
 | `%`         | `Num: x, Num: y` | Pushes `x mod y` |
 | `%`         | `Str: s, Any: a` | (Unintentional) Replaces first occurence of `%s` in `s` with `a` |
 | `+`         | `Num: x, Num: y` | Pushes `x + y` |
@@ -72,8 +74,8 @@ The following is a table of all operations currently available to a Premier prog
 | `K`         | (Unimplemented)  | |
 | `L`         | `Str: s, Num: n` | Pushes all but the first `n` characters of `s` |
 | `M`         | (Unimplemented)  | |
-| `N`         | --               | Pushes `nil` |
-| `O`         | (Unimplemented)  | |
+| `N`         | --               | Pushes `"\n"` |
+| `O`         | `Any: a`         | Prints `a` with trailing newline |
 | `P`         | --               | Pushes the current program |
 | `Q`         | --               | Pushes the data |
 | `R`         | (Unimplemented)  | |
@@ -90,8 +92,8 @@ The following is a table of all operations currently available to a Premier prog
 | `c`         | `Num: n`         | Converts `n` to a character |
 | `d`         | `Num: n`         | Duplicates top `n` members |
 | `e`         | `Num: n`         | Exits with exit code `n`, or `-1` if stack is empty |
-| `f`         | (Unimplemented)  | |
-| `g`         | (Unimplemented)  | |
+| `f`         | `Str: s, Num: n` | Pushes first `n` characters of `s` |
+| `g`         | --               | Pushes a line of stdin to the stack |
 | `h`         | (Unimplemented)  | |
 | `i`         | --               | Push the data pointer |
 | `j`         | (Unimplemented)  | |

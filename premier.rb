@@ -46,6 +46,7 @@ class PremState
         @j = 0
         @build = ""
         @building = false
+        @depth = 0
         @debug_iter = 1
         @implicit = true
     end
@@ -64,7 +65,7 @@ class PremState
     
     def exec_op(op)
         if @building
-            @j += 1
+            @j += op.size
             if op == @building
                 build_char = @building
                 @building = nil
@@ -82,6 +83,17 @@ class PremState
                 @build += op
                 return :next
             end
+        elsif @depth != 0
+            @j += op.size
+            @depth += 1 if op == '['
+            @depth -= 1 if op == ']'
+            if @depth == 0
+                @stack.push @build
+                @build = ""
+            else
+                @build += op
+            end
+            return :next
         end
         
         case op
@@ -93,6 +105,9 @@ class PremState
                 @stack.push ord op[1..-1]
             when '"', '|'
                 @building = op
+            when "["
+                @nested = true
+                @depth = 1
             
             # uppercase
             when "A"
@@ -110,6 +125,7 @@ class PremState
                 STDERR.puts "|  stack    | #{@stack}"
                 STDERR.puts "|  data     | #{@data.inspect}"
                 STDERR.puts "|  current  | #{@c.inspect}"
+                STDERR.puts "|  implicit | #{@implicit}"
                 @debug_it += 1
                 pause
             when "G"
@@ -120,7 +136,10 @@ class PremState
                 str, n = @stack.pop(2)
                 @stack.push str[n..-1]
             when "N"
-                @stack.push nil
+                @stack.push "\n"
+            when "O"
+                print @stack.pop
+                puts
             when "P"
                 @stack.push @program
             when "Q"
@@ -148,10 +167,11 @@ class PremState
                 @stack.concat @stack[-n..-1]
             when "e"
                 exit @stack.pop || -1
-            # drop first N characters
-            # when "f"
-                # n = @stack.pop
-                # @stack.push 
+            when "f"
+                s, n = @stack.pop(2)
+                @stack.push s[0..n-1]
+            when "g"
+                @stack.push STDIN.gets.chomp
             when "i"
                 @stack.push @i
             when "l"
@@ -174,7 +194,10 @@ class PremState
                 @stack.push -@stack.pop
             when "#"
                 @program = @stack.pop
+                @implicit = false
                 return :break
+            when "$"
+                @data = @stack.pop || ""
             when "%","+","-","*","/"
                 a, b = @stack.pop(2)
                 val = a.send op, b rescue 0
@@ -218,6 +241,8 @@ class PremState
             @j += op.size
         }
         $><< @stack.pop if @implicit
+        # p @stack
+        # pause
         @i += 1
     end
     
