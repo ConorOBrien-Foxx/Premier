@@ -227,7 +227,7 @@ class PremState
     
     def step
         @c = @data[@i]
-        @stack << @c
+        @stack << @c unless @c.nil?
         @implicit = true
         @build = ""
         @building = nil
