@@ -153,7 +153,7 @@ class PremState
                 # n = @stack.pop
                 # @stack.push 
             when "i"
-                @stack.push i
+                @stack.push @i
             when "l"
                 @stack.push @stack.pop.size
             when "n"
